@@ -1,0 +1,4 @@
+#ifndef Included_SmartIO_DimmableLed_H
+#define Included_SmartIO_DimmableLed_H
+
+#endif // Included_SmartIO_DimmableLed_H
