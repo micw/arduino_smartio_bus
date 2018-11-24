@@ -45,9 +45,9 @@ void DimmableLed::dim_stop() {
 		}
 		
 void DimmableLed::update() {
-			Serial.print(dim_direction);
-			Serial.print(" ");
-			Serial.println(pwm_value);
+//			Serial.print(dim_direction);
+//			Serial.print(" ");
+//			Serial.println(pwm_value);
 			if (on_off && pwm_value>0) {
 		int v=pwm_value;
 		if (v<0) v=0;
