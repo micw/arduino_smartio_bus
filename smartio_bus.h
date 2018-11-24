@@ -17,9 +17,10 @@ class Bus {
 		Bus();
 		void send(char input_type, byte input_id, byte state);
 		void on(char input_type, byte input_id, byte state, BusActionCallback bus_action_function);
-
+		boolean debug;
 	private:
-		Vector<BusAction*> actions;
+		Vector<BusAction> actions;
+		void debug_log(char input_type, byte input_id, byte state);
 };
 
 #endif // Included_SmartIO_Bus_H 

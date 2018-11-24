@@ -1,17 +1,17 @@
 #ifndef Included_SmartIO_Button_H
 #define Included_SmartIO_Button_H
 
+#include <smartio_main_loop.h>
 #include <smartio_bus.h>
 
-class Button {
+class Button : MainLoopListener {
 	public:
 		static const char TYPE='b';
 		static const int ACTION_KLICK=1;
 		static const int ACTION_HOLD=255;
 		static const int ACTION_RELEASE=0;
 
-		Button(unsigned int pin, Bus* bus, byte button_id);
-		void loop();
+		Button(Bus* bus, unsigned int pin, byte button_id);
 
 	private:
 		unsigned int pin; // pin of this button
@@ -26,6 +26,8 @@ class Button {
 		boolean debounce_state; // for debounce
 		unsigned long debounce_state_since; // for debounce
 		const unsigned long debounce_delay_ms=50;
+
+		void loop();
 };
 
 #endif // Included_SmartIO_Button_H

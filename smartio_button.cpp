@@ -1,9 +1,8 @@
 #include <Arduino.h>
 #include <smartio_button.h>
 
-Button::Button(unsigned int pin, Bus* bus, byte button_id) :
-	pin(pin), bus(bus),	button_id(button_id) {
-	
+Button::Button(Bus* bus, unsigned int pin, byte button_id):
+		pin(pin), bus(bus),	button_id(button_id) {
 	pinMode(pin,INPUT_PULLUP);
 	state=!digitalRead(pin);
 	state_since=millis();
