@@ -1,26 +1,19 @@
 #include <Arduino.h>
 #include <smartio_dimmable_led.h>
 
-// Arduino dims from 0...255, ESP8266 from 0..1023
-#if defined(ESP8266)
-#define PWM_MAX_VALUE 1023
-#else
-#define PWM_MAX_VALUE 255
-#endif
-
-DimmableLed::DimmableLed(unsigned int pin):
-		pin(pin), dim_value(1023), old_dim_value(-1), on_off(false) {
-	pinMode(pin,OUTPUT);
-	update();
+void DimmableLedBase::loop() {
+	if (perform_dim()) {
+		update();
+	}
 }
 
-void DimmableLed::loop() {
+boolean DimmableLedBase::perform_dim() {
 	if (dimming) {
-		if (millis()-last_dim<3) return; // dim every 3 ms -> 1 dim cycle ~ 3s
+		if (millis()-last_dim<3) return false; // dim every 3 ms -> 1 dim cycle ~ 3s
 		last_dim=millis();
 		dim_value+=dim_direction;
 		if (dim_value<1) {
-			// when dimmed down to minimum, we switch direction an dim up
+			// when dimmed down to minimum, we switch direction and dim up
 			dim_value=1;
 			dim_direction=1;
 		} else if (dim_value>1300) {
@@ -29,15 +22,16 @@ void DimmableLed::loop() {
 			dim_value=1300;
 			dim_direction=-1;
 		}
-		update();
+		return true;
 	}
+	return false;
 }
 
-void DimmableLed::toggle() {
+void DimmableLedBase::toggle() {
 	on_off=!on_off;
 	update();
 }
-void DimmableLed::dim_start() {
+void DimmableLedBase::dim_start() {
 	dimming=true;
 	if (!on_off) { // off -> dim up
 		dim_direction=1;
@@ -50,17 +44,17 @@ void DimmableLed::dim_start() {
 	}
 }
 
-void DimmableLed::dim_stop() {
+void DimmableLedBase::dim_stop() {
 	dimming=false;
 }
 
-int DimmableLed::normalize(int value, int max_value) {
+int DimmableLedBase::normalize(int value, int max_value) {
 	if (value<0) return 0;
 	if (value>max_value) return max_value;
 	return value;
 }
 
-int DimmableLed::value_to_pwm(int value, int max_value) {
+int DimmableLedBase::value_to_pwm(int value, int max_value) {
 
 //	return (int)pow(max_value, value/1023.0);
 	// https://www.mikrocontroller.net/articles/LED-Fading
@@ -68,18 +62,28 @@ int DimmableLed::value_to_pwm(int value, int max_value) {
 	return (int) (pow(2, log2(max_value) * (value+1)/1024.0) - 1);
 }
 
-void DimmableLed::update() {
+void DimmableLedBase::update() {
 	if (on_off && dim_value>0) {
 		int v=normalize(dim_value,1023);
-		if (v!=old_dim_value) {
-			// we update the PWM signal only if the actual value changes
-			old_dim_value=v;
-			int pwm_value=value_to_pwm(v,PWM_MAX_VALUE);
-			pwm_value=normalize(pwm_value,PWM_MAX_VALUE);
-			analogWrite(pin,pwm_value);
-		}
+		dim_to(v);
 	} else {
-		old_dim_value=-1;
+		dim_to(-1);
+	}
+}
+
+
+DimmableLed::DimmableLed(unsigned int pin):
+		pin(pin) {
+	pinMode(pin,OUTPUT);
+	update();
+}
+
+void DimmableLed::dim_to(int dim_value) {
+	if (dim_value<0) {
 		digitalWrite(pin,0);
+	} else {
+		int pwm_value=value_to_pwm(dim_value,pwm_max_value);
+		pwm_value=normalize(pwm_value,pwm_max_value);
+		analogWrite(pin,pwm_value);
 	}
 }
