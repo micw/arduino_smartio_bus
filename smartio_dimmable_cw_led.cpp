@@ -23,6 +23,9 @@ void DimmableCWLed::loop() {
 
 void DimmableCWLed::fade_start() {
 	fading=true;
+	if (on_off) {
+		fade_direction=-fade_direction;
+	}
 }
 
 void DimmableCWLed::fade_stop() {
