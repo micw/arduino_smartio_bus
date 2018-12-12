@@ -16,7 +16,7 @@ class ButtonDebounce {
 		boolean state; // current state (0 or 1)
 		boolean debounce_state; // temporary state while debouncing
 		unsigned long debounce_state_since;
-		const unsigned long debounce_delay_ms=50;
+		const unsigned long debounce_delay_ms=15;
 };
 /**
  * Action-Handling (klick, hold, release) for a single logical button

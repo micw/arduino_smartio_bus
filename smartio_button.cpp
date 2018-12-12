@@ -24,14 +24,16 @@ void ButtonDebounce::init(boolean pressed) {
 
 boolean ButtonDebounce::update(boolean pressed) {
 
-	// debounce: a state change must be pressent for at least 50ms
-	if (pressed!=state) {
-		if (pressed!=debounce_state) {
-			debounce_state=pressed;
-			debounce_state_since=millis();
-		} else if (millis()-debounce_state_since>debounce_delay_ms) {
-			state=debounce_state;
-		}
+	// if the debounce_state changes, timer resets
+	if (pressed!=debounce_state) {
+		debounce_state=pressed;
+		debounce_state_since=millis();
+	}
+
+	// if debounce_state is stable for debounce_delay_ms, we take it as state
+	if (debounce_state_since!=state &&
+		millis()-debounce_state_since>debounce_delay_ms) {
+		state=debounce_state;
 	}
 	return state;
 }
