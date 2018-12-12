@@ -68,10 +68,6 @@ void DimmableCWLed::dim_to(int dim_value) {
 		int pwm_value2=this->value_to_pwm(dim_value2,pwm_max_value);
 		pwm_value2=this->normalize(pwm_value2,pwm_max_value);
 
-		Serial.print(dim_value1);
-		Serial.print(" ");
-		Serial.println(dim_value2);
-
 		analogWrite(pin1,pwm_value1);
 		analogWrite(pin2,pwm_value2);
 	}
