@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <smartio_button.h>
 
-Button::Button(Bus* bus, unsigned int pin, byte button_id):
+Button::Button(Bus* bus, unsigned int pin, unsigned long button_id):
 		bus(bus),pin(pin),button_id(button_id) {
 	pinMode(pin,INPUT_PULLUP);
 	boolean state=!digitalRead(pin);

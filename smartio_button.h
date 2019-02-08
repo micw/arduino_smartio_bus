@@ -41,12 +41,12 @@ class Button : MainLoopListener {
 		static const int ACTION_HOLD=255;
 		static const int ACTION_RELEASE=0;
 
-		Button(Bus* bus, unsigned int pin, byte button_id);
+		Button(Bus* bus, unsigned int pin, unsigned long button_id);
 
 	private:
 		Bus* bus;
 		unsigned int pin; // pin of this button
-		byte button_id;
+		unsigned long button_id;
 		ButtonDebounce debounce;
 		ButtonAction action;
 

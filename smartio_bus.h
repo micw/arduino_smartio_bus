@@ -7,7 +7,7 @@
 typedef void (*BusActionCallback) ();
 struct BusAction {
 	char input_type;
-	byte input_id;
+	unsigned long input_id;
 	byte state;
 	BusActionCallback callback;
 };
@@ -15,12 +15,12 @@ struct BusAction {
 class Bus {
 	public:
 		Bus();
-		void send(char input_type, byte input_id, byte state);
-		void on(char input_type, byte input_id, byte state, BusActionCallback bus_action_function);
+		void send(char input_type, unsigned long input_id, byte state);
+		void on(char input_type, unsigned long input_id, byte state, BusActionCallback bus_action_function);
 		boolean debug;
 	private:
-		Vector<BusAction> actions;
-		void debug_log(char input_type, byte input_id, byte state);
+		Vector<BusAction*> actions;
+		void debug_log(char input_type, unsigned long input_id, byte state);
 };
 
 #endif // Included_SmartIO_Bus_H 

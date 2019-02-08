@@ -15,6 +15,13 @@ class DimmableLedBase : MainLoopListener {
 		void dim_start();
 		void dim_stop();
 		void loop();
+
+		bool get_state();
+		void set_state(bool on_off);
+
+		void set_dim_value(int dim_value);
+		int get_dim_value();
+
 	protected:
 		int dim_value=700;
 		boolean on_off=false;

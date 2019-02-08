@@ -48,6 +48,23 @@ void DimmableLedBase::dim_stop() {
 	dimming=false;
 }
 
+int DimmableLedBase::get_dim_value() {
+	return dim_value;
+}
+void DimmableLedBase::set_dim_value(int dim_value) {
+	if (dim_value<=0) this->dim_value=0;
+	else if (dim_value>1023) this->dim_value=1023;
+	else this->dim_value = dim_value;
+	update();
+}
+bool DimmableLedBase::get_state() {
+	return on_off;
+}
+void DimmableLedBase::set_state(bool state) {
+	on_off=state;
+	update();
+}
+
 int DimmableLedBase::normalize(int value, int max_value) {
 	if (value<0) return 0;
 	if (value>max_value) return max_value;

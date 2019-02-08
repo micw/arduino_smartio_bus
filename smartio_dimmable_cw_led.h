@@ -12,6 +12,9 @@ class DimmableCWLed : public DimmableLedBase {
 		void fade_start();
 		void fade_stop();
 		void loop();
+
+		void set_fade_value(int fade_value);
+		int get_fade_value();
 	protected:
 		boolean perform_fade();
 		void dim_to(int dim_value);

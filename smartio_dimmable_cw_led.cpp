@@ -32,6 +32,14 @@ void DimmableCWLed::fade_stop() {
 	fading=false;
 }
 
+void DimmableCWLed::set_fade_value(int fade_value) {
+	if (fade_value<0) this->fade_value=0;
+	else if (fade_value>1023) this->fade_value=1023;
+	else this->fade_value = fade_value;
+}
+int DimmableCWLed::get_fade_value() {
+	return fade_value;
+}
 
 boolean DimmableCWLed::perform_fade() {
 	if (fading && on_off) {
