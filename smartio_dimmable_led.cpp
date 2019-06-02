@@ -73,10 +73,15 @@ int DimmableLedBase::normalize(int value, int max_value) {
 
 int DimmableLedBase::value_to_pwm(int value, int max_value) {
 
-//	return (int)pow(max_value, value/1023.0);
-	// https://www.mikrocontroller.net/articles/LED-Fading
-	// This formular gives an almost linear impression of the fading
-	return (int) (pow(2, log2(max_value) * (value+1)/1024.0) - 1);
+	#if defined(ESP8266)
+		// https://www.mikrocontroller.net/articles/LED-Fading
+		// This formular gives an almost linear impression of the fading
+		return (int) (pow(2, log2(max_value) * (value+1)/1024.0) - 1);
+	#else
+		// log2 is not available on controllino
+		return (int)pow(max_value, value/1023.0);
+	#endif
+
 }
 
 void DimmableLedBase::update() {

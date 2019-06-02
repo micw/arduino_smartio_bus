@@ -3,6 +3,10 @@
 
 #include <smartio_main_loop.h>
 
+#if !defined(PWMRANGE)
+#define PWMRANGE 255
+#endif
+
 /**
  * Base class for pwm dimmable LEDs
  * A pwm-dimmable led. Pwm dim range is from 0...1023.
