@@ -10,7 +10,6 @@ HomewizardReceiver::HomewizardReceiver(Bus* bus, unsigned int pin):
 }
 
 void HomewizardReceiver::loop() {
-  HW_DATAGRAM data;
   if (HomeWizard::receiveData(&data))
   {
   	unsigned long button_id=(data.id&0xFFFFFF) << 8 | (data.unit&0xFF);
