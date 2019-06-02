@@ -1,3 +1,5 @@
+#if defined(ESP8266)
+
 #include <Arduino.h>
 
 #include <ESP8266WiFi.h>
@@ -355,3 +357,5 @@ char* MqttDimmableCWLedAdapter::get_value(const char* property, char* buffer) {
 	}
 	return 0;
 };
+
+#endif
